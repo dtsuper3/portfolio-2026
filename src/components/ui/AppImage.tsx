@@ -19,7 +19,7 @@ interface AppImageProps {
     fallbackSrc?: string;
     loading?: 'lazy' | 'eager';
     unoptimized?: boolean;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 const AppImage = memo(function AppImage({
@@ -38,7 +38,6 @@ const AppImage = memo(function AppImage({
     fallbackSrc = '/assets/images/no_image.png',
     loading = 'lazy',
     unoptimized = false,
-    ...props
 }: AppImageProps) {
     const [imageSrc, setImageSrc] = useState(src);
     const [isLoading, setIsLoading] = useState(true);
@@ -65,7 +64,7 @@ const AppImage = memo(function AppImage({
     }, [className, isLoading, onClick]);
 
     const imageProps = useMemo(() => {
-        const baseProps: any = {
+        return {
             src: imageSrc,
             alt,
             className: imageClassName,
@@ -75,20 +74,10 @@ const AppImage = memo(function AppImage({
             onError: handleError,
             onLoad: handleLoad,
             onClick,
+            priority,
+            loading: priority ? undefined : loading,
+            blurDataURL: (blurDataURL && placeholder === 'blur') ? blurDataURL : undefined,
         };
-
-        if (priority) {
-            baseProps.priority = true;
-        } else {
-            baseProps.loading = loading;
-        }
-
-        // Add blur placeholder if provided
-        if (blurDataURL && placeholder === 'blur') {
-            baseProps.blurDataURL = blurDataURL;
-        }
-
-        return baseProps;
     }, [imageSrc, alt, imageClassName, quality, placeholder, blurDataURL, unoptimized, priority, loading, handleError, handleLoad, onClick]);
 
     if (fill) {
@@ -96,10 +85,11 @@ const AppImage = memo(function AppImage({
             <div className="relative" style={{ width: '100%', height: '100%' }}>
                 <Image
                     {...imageProps}
+                    src={imageSrc}
+                    alt={alt}
                     fill
                     sizes={sizes || '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
                     style={{ objectFit: 'cover' }}
-                    {...props}
                 />
             </div>
         );
@@ -108,10 +98,11 @@ const AppImage = memo(function AppImage({
     return (
         <Image
             {...imageProps}
+            src={imageSrc}
+            alt={alt}
             width={width || 400}
             height={height || 300}
             sizes={sizes}
-            {...props}
         />
     );
 });
