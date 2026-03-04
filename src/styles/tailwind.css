@@ -1,0 +1,417 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&display=swap');
+
+:root {
+    --terminal-green: #00FF41;
+    --terminal-green-dim: #00CC33;
+    --terminal-green-faint: #004D14;
+    --terminal-amber: #FF6B35;
+    --terminal-amber-dim: #CC5520;
+    --terminal-cyan: #00FFFF;
+    --terminal-bg: #0A0E0A;
+    --terminal-surface: #0D1A0D;
+    --terminal-surface-2: #112211;
+    --terminal-border: #1A3320;
+    --terminal-text: #E8FFE8;
+    --terminal-text-dim: #7AB87A;
+    --terminal-text-faint: #3D6B3D;
+    --crt-glow: 0 0 10px rgba(0, 255, 65, 0.4), 0 0 20px rgba(0, 255, 65, 0.2), 0 0 40px rgba(0, 255, 65, 0.1);
+    --crt-glow-strong: 0 0 15px rgba(0, 255, 65, 0.6), 0 0 30px rgba(0, 255, 65, 0.3), 0 0 60px rgba(0, 255, 65, 0.15);
+    --amber-glow: 0 0 10px rgba(255, 107, 53, 0.4), 0 0 20px rgba(255, 107, 53, 0.2);
+    --cyan-glow: 0 0 10px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.15);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'JetBrains Mono', monospace;
+    background-color: var(--terminal-bg);
+    color: var(--terminal-text);
+    overflow-x: hidden;
+}
+
+/* ─── CRT Effects ─── */
+.crt-screen {
+    position: relative;
+}
+
+.crt-screen::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.08) 2px,
+            rgba(0, 0, 0, 0.08) 4px);
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.crt-screen::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at center,
+            transparent 60%,
+            rgba(0, 0, 0, 0.5) 100%);
+    pointer-events: none;
+    z-index: 9998;
+}
+
+/* ─── Scan line animation ─── */
+@keyframes scanline {
+    0% {
+        transform: translateY(-100vh);
+    }
+
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+.scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to bottom,
+            transparent,
+            rgba(0, 255, 65, 0.08),
+            transparent);
+    animation: scanline 8s linear infinite;
+    pointer-events: none;
+    z-index: 9997;
+}
+
+/* ─── Phosphor Glow ─── */
+.glow-green {
+    text-shadow: var(--crt-glow);
+    color: var(--terminal-green);
+}
+
+.glow-green-strong {
+    text-shadow: var(--crt-glow-strong);
+    color: var(--terminal-green);
+}
+
+.glow-amber {
+    text-shadow: var(--amber-glow);
+    color: var(--terminal-amber);
+}
+
+.glow-cyan {
+    text-shadow: var(--cyan-glow);
+    color: var(--terminal-cyan);
+}
+
+.box-glow {
+    box-shadow: var(--crt-glow);
+}
+
+.box-glow-strong {
+    box-shadow: var(--crt-glow-strong);
+}
+
+.box-glow-amber {
+    box-shadow: var(--amber-glow);
+}
+
+/* ─── Terminal Window ─── */
+.terminal-window {
+    background: var(--terminal-surface);
+    border: 1px solid var(--terminal-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.terminal-titlebar {
+    background: var(--terminal-surface-2);
+    border-bottom: 1px solid var(--terminal-border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+/* ─── Cursor Blink ─── */
+@keyframes cursor-blink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
+}
+
+.cursor-blink {
+    animation: cursor-blink 1s step-end infinite;
+    color: var(--terminal-green);
+    text-shadow: var(--crt-glow);
+}
+
+/* ─── Typewriter ─── */
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+/* ─── Phosphor pulse ─── */
+@keyframes phosphor-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+
+    50% {
+        opacity: 0.85;
+        filter: brightness(0.9);
+    }
+}
+
+.phosphor-pulse {
+    animation: phosphor-pulse 4s ease-in-out infinite;
+}
+
+/* ─── Flicker ─── */
+@keyframes flicker {
+
+    0%,
+    98%,
+    100% {
+        opacity: 1;
+    }
+
+    99% {
+        opacity: 0.85;
+    }
+}
+
+.flicker {
+    animation: flicker 6s infinite;
+}
+
+/* ─── Boot sequence ─── */
+@keyframes boot-line {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.boot-line {
+    opacity: 0;
+    animation: boot-line 0.3s ease forwards;
+}
+
+/* ─── Stat counter ─── */
+@keyframes count-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ─── Card hover glow ─── */
+.project-card {
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    border: 1px solid var(--terminal-border);
+    background: var(--terminal-surface);
+}
+
+.project-card:hover {
+    border-color: var(--terminal-green-dim);
+    box-shadow: var(--crt-glow), inset 0 0 30px rgba(0, 255, 65, 0.03);
+    transform: translateY(-2px);
+}
+
+/* ─── Tech badge ─── */
+.tech-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--terminal-border);
+    background: var(--terminal-surface-2);
+    color: var(--terminal-text-dim);
+    transition: all 0.2s ease;
+}
+
+.tech-badge:hover {
+    border-color: var(--terminal-green-dim);
+    color: var(--terminal-green);
+    text-shadow: var(--crt-glow);
+}
+
+/* ─── Blog card ─── */
+.blog-card {
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.blog-card:hover {
+    transform: rotate(0deg) translateY(-4px) !important;
+    box-shadow: var(--crt-glow-strong);
+}
+
+/* ─── Terminal input ─── */
+.terminal-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--terminal-border);
+    color: var(--terminal-green);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 8px 0;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s ease;
+    caret-color: var(--terminal-green);
+}
+
+.terminal-input:focus {
+    border-bottom-color: var(--terminal-green);
+    text-shadow: var(--crt-glow);
+}
+
+.terminal-input::placeholder {
+    color: var(--terminal-text-faint);
+}
+
+.terminal-textarea {
+    background: transparent;
+    border: 1px solid var(--terminal-border);
+    color: var(--terminal-green);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 12px;
+    width: 100%;
+    outline: none;
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 0.2s ease;
+    border-radius: 4px;
+    caret-color: var(--terminal-green);
+}
+
+.terminal-textarea:focus {
+    border-color: var(--terminal-green);
+    box-shadow: var(--crt-glow);
+}
+
+.terminal-textarea::placeholder {
+    color: var(--terminal-text-faint);
+}
+
+/* ─── Progress bar ─── */
+.skill-bar-fill {
+    height: 3px;
+    background: var(--terminal-green);
+    box-shadow: var(--crt-glow);
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.skill-bar-fill.animated {
+    transform: scaleX(1);
+}
+
+/* ─── Noise overlay ─── */
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 9996;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ─── Section reveal ─── */
+.reveal-section {
+    opacity: 1;
+}
+
+/* ─── Grid bg ─── */
+.grid-bg {
+    background-image:
+        linear-gradient(to right, rgba(0, 255, 65, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 255, 65, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--terminal-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--terminal-border);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--terminal-green-faint);
+}
+
+/* ─── Selection ─── */
+::selection {
+    background: var(--terminal-green-faint);
+    color: var(--terminal-green);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+    .crt-screen::before {
+        opacity: 0.5;
+    }
+}
