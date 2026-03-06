@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import MatrixRain from '@/components/ui/MatrixRain';
 
 interface HeroProps {
   scrollTo: (id: string) => void;
@@ -9,8 +10,9 @@ interface HeroProps {
 
 export default function Hero({ scrollTo }: HeroProps) {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center px-4 pt-16">
-      <div className="max-w-4xl w-full">
+    <section id="home" className="relative min-h-screen flex items-center justify-center px-4 pt-16 overflow-hidden">
+      <MatrixRain />
+      <div className="relative z-10 max-w-4xl w-full">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}

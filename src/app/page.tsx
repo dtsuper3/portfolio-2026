@@ -94,7 +94,7 @@ export default function HomePage() {
 
   return (
     <div className="crt-screen min-h-screen flicker">
-      <div className="scanline" />
+      {/* <div className="scanline" /> */}
 
       <Navbar activeSection={activeSection} scrollTo={scrollTo} />
 

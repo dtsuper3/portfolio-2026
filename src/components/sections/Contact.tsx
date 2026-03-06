@@ -6,16 +6,44 @@ import { motion } from 'framer-motion';
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [formSent, setFormSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorStatus, setErrorStatus] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`New Portfolio Message from ${formData.name}`);
-    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
-    window.location.href = `mailto:dtsuper3@gmail.com?subject=${subject}&body=${body}`;
+    setIsSubmitting(true);
+    setErrorStatus(null);
 
-    setFormSent(true);
-    setTimeout(() => setFormSent(false), 5000);
-    setFormData({ name: '', email: '', message: '' });
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setFormSent(true);
+        setTimeout(() => setFormSent(false), 5000);
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        console.error("Error submitting form", result);
+        setErrorStatus("failed to route message. check access key.");
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorStatus("network error. please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -36,7 +64,7 @@ export default function Contact() {
             {"//"} Send a message — I reply within 24h
           </p>
         </motion.div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -77,8 +105,8 @@ export default function Contact() {
               {formSent ? (
                 <div className="text-center py-8">
                   <div className="text-4xl mb-4 glow-green">✓</div>
-                  <p className="glow-green font-bold mb-2">Message routed.</p>
-                  <p className="text-sm text-dim">Please send the email from your client.</p>
+                  <p className="glow-green font-bold mb-2">Message routed successfully.</p>
+                  <p className="text-sm text-dim">I will get back to you soon.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -87,9 +115,10 @@ export default function Contact() {
                     <input
                       type="text"
                       required
+                      disabled={isSubmitting}
                       value={formData.name}
                       onChange={(e) => setFormData(p => ({ ...p, name: e.target.value }))}
-                      className="w-full bg-transparent border rounded px-3 py-1.5 text-sm font-mono outline-none focus:border-green-600 transition-colors"
+                      className="w-full bg-transparent border rounded px-3 py-1.5 text-sm font-mono outline-none focus:border-green-600 transition-colors disabled:opacity-50"
                       style={{ borderColor: 'var(--terminal-border)', color: 'var(--terminal-text)' }}
                     />
                   </div>
@@ -98,9 +127,10 @@ export default function Contact() {
                     <input
                       type="email"
                       required
+                      disabled={isSubmitting}
                       value={formData.email}
                       onChange={(e) => setFormData(p => ({ ...p, email: e.target.value }))}
-                      className="w-full bg-transparent border rounded px-3 py-1.5 text-sm font-mono outline-none focus:border-green-600 transition-colors"
+                      className="w-full bg-transparent border rounded px-3 py-1.5 text-sm font-mono outline-none focus:border-green-600 transition-colors disabled:opacity-50"
                       style={{ borderColor: 'var(--terminal-border)', color: 'var(--terminal-text)' }}
                     />
                   </div>
@@ -109,15 +139,22 @@ export default function Contact() {
                     <textarea
                       required
                       rows={4}
+                      disabled={isSubmitting}
                       value={formData.message}
                       onChange={(e) => setFormData(p => ({ ...p, message: e.target.value }))}
-                      className="w-full bg-transparent border rounded px-3 py-1.5 text-sm font-mono outline-none focus:border-green-600 transition-colors resize-none"
+                      className="w-full bg-transparent border rounded px-3 py-1.5 text-sm font-mono outline-none focus:border-green-600 transition-colors resize-none disabled:opacity-50"
                       style={{ borderColor: 'var(--terminal-border)', color: 'var(--terminal-text)' }}
                     />
                   </div>
+
+                  {errorStatus && (
+                    <div className="text-red-400 text-xs font-mono">{errorStatus}</div>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full py-2 rounded font-mono text-sm font-bold transition-all duration-200 box-glow hover:box-glow-strong"
+                    disabled={isSubmitting}
+                    className="w-full py-2 rounded font-mono text-sm font-bold transition-all duration-200 box-glow hover:box-glow-strong disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       background: 'var(--terminal-green-faint)',
                       border: '1px solid var(--terminal-green-dim)',
@@ -125,7 +162,7 @@ export default function Contact() {
                       textShadow: 'var(--crt-glow)',
                     }}
                   >
-                    ./send.sh ▶
+                    {isSubmitting ? './sending...' : './send.sh ▶'}
                   </button>
                 </form>
               )}
