@@ -66,7 +66,7 @@ export default function Hero({ scrollTo }: HeroProps) {
                 ls ./projects
               </a>
               <a
-                href="/docs/Deepak-Thapa-Resume-Web-Developer.pdf"
+                href="/docs/Deepak-Thapa-Resume-Full-Stack-Developer.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-mono text-sm px-5 py-2 rounded border transition-all duration-200 hover:border-green-800"
