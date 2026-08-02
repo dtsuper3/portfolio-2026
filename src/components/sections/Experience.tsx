@@ -10,53 +10,73 @@ interface ExperienceProps {
 
 export default function Experience({ experience }: ExperienceProps) {
   return (
-    <section id="experience" className="py-24 px-4" style={{ background: 'var(--terminal-surface)' }}>
+    <section
+      id="experience"
+      aria-label="Work Experience Section"
+      className="py-24 px-4"
+      style={{ background: 'var(--terminal-surface)' }}
+    >
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.5 }}
           className="mb-10"
         >
           <div className="flex items-center gap-3 mb-2">
-            <span style={{ color: 'var(--terminal-green)', textShadow: 'var(--crt-glow)' }}>$</span>
-            <h2 className="text-2xl font-bold" style={{ color: 'var(--terminal-text)' }}>cat ./experience.log</h2>
+            <span style={{ color: 'var(--terminal-green)', textShadow: 'var(--crt-glow)' }} aria-hidden="true">
+              $
+            </span>
+            <h2 className="text-2xl font-bold" style={{ color: 'var(--terminal-text)' }}>
+              cat ./experience.log
+            </h2>
           </div>
           <p className="text-sm ml-6" style={{ color: 'var(--terminal-text-faint)' }}>
-            {"//"} {experience.length} positions held
+            {'//'} {experience.length} engineering & software development positions held
           </p>
         </motion.div>
+
         <div className="space-y-4">
           {experience.map((exp, i) => (
-            <motion.div
+            <motion.article
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.5, delay: i * 0.15 }}
-              key={i}
+              key={`${exp.company}-${exp.period}`}
               className="terminal-window p-5 transition-all duration-300 hover:border-[var(--terminal-green-dim)]"
             >
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                 <div className="flex items-center gap-3">
-                  <span style={{ color: 'var(--terminal-green)', textShadow: 'var(--crt-glow)' }}>▸</span>
+                  <span
+                    style={{ color: 'var(--terminal-green)', textShadow: 'var(--crt-glow)' }}
+                    aria-hidden="true"
+                  >
+                    ▸
+                  </span>
                   <div>
-                    <span className="font-bold text-sm" style={{ color: 'var(--terminal-text)' }}>{exp.role}</span>
+                    <h3 className="font-bold text-sm inline" style={{ color: 'var(--terminal-text)' }}>
+                      {exp.role}
+                    </h3>
                     <span style={{ color: 'var(--terminal-text-faint)' }}> @ </span>
                     <a
                       href={exp.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm hover:text-green-400 transition-colors"
+                      className="text-sm hover:text-green-400 transition-colors focus:outline-none focus:ring-1 focus:ring-green-400 rounded px-1"
                       style={{ color: 'var(--terminal-cyan)', textShadow: 'var(--cyan-glow)' }}
+                      aria-label={`Visit ${exp.company} website (opens in new tab)`}
                     >
                       {exp.company}
                     </a>
                   </div>
                 </div>
-                <span className="tech-badge text-xs ml-6 md:ml-0">{exp.period}</span>
+                <span className="tech-badge text-xs ml-6 md:ml-0 self-start md:self-auto">
+                  {exp.period}
+                </span>
               </div>
-            </motion.div>
+            </motion.article>
           ))}
         </div>
       </div>

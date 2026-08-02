@@ -1,30 +1,78 @@
 import React from 'react';
 import type { Metadata, Viewport } from 'next';
+import { JetBrains_Mono } from 'next/font/google';
 import '../styles/index.css';
+import JsonLd from '@/components/seo/JsonLd';
+import { getPersonSchema, getWebSiteSchema, SITE_URL } from '@/lib/jsonld';
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
+  display: 'swap',
+});
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#0A0E0A',
 };
 
 export const metadata: Metadata = {
-  title: 'Deepak Thapa | Web Developer & Software Engineer',
-  description: 'Portfolio of Deepak Thapa, a Full-Stack Web Developer specialized in React, Next.js, and Agentic AI. Building creative and helpful digital solutions.',
-  keywords: "Deepak Thapa, Web Developer, Software Engineer, Full-Stack Developer, React Developer, Next.js, TypeScript, Agentic AI, Portfolio 2026, New Delhi Developer",
-  authors: [{ name: "Deepak Thapa" }],
-  icons: {
-    icon: '/logo.png',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'Deepak Thapa | Web Developer & Software Engineer',
+    template: '%s | Deepak Thapa',
   },
+  description:
+    'Portfolio of Deepak Thapa, a Full-Stack Web Developer & Software Engineer specialized in React, Next.js, TypeScript, and Agentic AI. Building performant, user-centric web applications.',
+  keywords: [
+    'Deepak Thapa',
+    'Web Developer',
+    'Software Engineer',
+    'Full-Stack Developer',
+    'React Developer',
+    'Next.js Developer',
+    'TypeScript Engineer',
+    'Node.js Developer',
+    'Agentic AI',
+    'New Delhi Developer',
+    'Portfolio 2026',
+  ],
+  authors: [{ name: 'Deepak Thapa', url: SITE_URL }],
+  creator: 'Deepak Thapa',
+  publisher: 'Deepak Thapa',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: '/',
+  },
+  icons: {
+    icon: [{ url: '/logo.png', type: 'image/png' }],
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
+  manifest: '/manifest.json',
   openGraph: {
     title: 'Deepak Thapa | Web Developer & Software Engineer',
-    description: 'Explore the portfolio of Deepak Thapa, focusing on modern web technologies and AI.',
-    url: 'https://deepakthapa.dev', // Replace with actual URL if known
+    description:
+      'Portfolio of Deepak Thapa, a Full-Stack Web Developer specialized in React, Next.js, TypeScript, and Agentic AI.',
+    url: SITE_URL,
     siteName: 'Deepak Thapa Portfolio',
     images: [
       {
-        url: '/og-image.png', // Ensure this exists in public/
+        url: '/og-image.png',
         width: 1200,
         height: 630,
+        alt: 'Deepak Thapa - Full-Stack & Next.js Engineer',
       },
     ],
     locale: 'en_US',
@@ -33,9 +81,11 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Deepak Thapa | Web Developer & Software Engineer',
-    description: 'Full-Stack Web Developer specialized in React, Next.js, and Agentic AI.',
+    description:
+      'Full-Stack Web Developer specialized in React, Next.js, TypeScript, and Agentic AI.',
     creator: '@Deepak13307717',
-    images: ['/og-image.png'],
+    site: '@Deepak13307717',
+    images: ['/twitter-image.png'],
   },
 };
 
@@ -44,9 +94,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const personSchema = getPersonSchema();
+  const websiteSchema = getWebSiteSchema();
+
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className={jetbrainsMono.variable}>
+      <head>
+        <JsonLd data={[personSchema, websiteSchema]} />
+      </head>
+      <body className="font-mono bg-[var(--terminal-bg)] text-[var(--terminal-text)] antialiased">
         {children}
       </body>
     </html>
