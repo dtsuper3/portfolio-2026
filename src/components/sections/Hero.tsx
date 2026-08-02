@@ -124,7 +124,7 @@ export default function Hero({ scrollTo }: HeroProps) {
               </a>
 
               <a
-                href="/docs/Deepak-Thapa-Resume-Web-Developer.pdf"
+                href="/docs/Deepak-Thapa-Resume-Full-Stack-Developer.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-mono text-xs sm:text-sm px-4 py-2 rounded border transition-all duration-200 hover:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-400"
