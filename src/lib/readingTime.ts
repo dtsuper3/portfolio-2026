@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Calculates estimated reading time in minutes from Portable Text content or raw text
  */

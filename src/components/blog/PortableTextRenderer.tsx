@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -74,8 +75,8 @@ function CalloutBlock({ value }: { value: any }) {
     type === 'warning'
       ? 'border-[var(--terminal-amber)] bg-[rgba(255,107,53,0.05)] text-[var(--terminal-amber)]'
       : type === 'info'
-      ? 'border-[var(--terminal-cyan)] bg-[rgba(0,255,255,0.05)] text-[var(--terminal-cyan)]'
-      : 'border-[var(--terminal-green)] bg-[rgba(0,255,65,0.05)] text-[var(--terminal-green)]';
+        ? 'border-[var(--terminal-cyan)] bg-[rgba(0,255,255,0.05)] text-[var(--terminal-cyan)]'
+        : 'border-[var(--terminal-green)] bg-[rgba(0,255,65,0.05)] text-[var(--terminal-green)]';
 
   return (
     <div className={`my-6 p-4 rounded border-l-4 ${borderColor} bg-[var(--terminal-surface)] shadow-md`}>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -76,11 +77,10 @@ export default function TOC({ content }: TOCProps) {
             <a
               key={heading.id}
               href={`#${heading.id}`}
-              className={`block transition-all py-1 pl-${(heading.level - 1) * 3} border-l-2 leading-relaxed truncate ${
-                isActive
+              className={`block transition-all py-1 pl-${(heading.level - 1) * 3} border-l-2 leading-relaxed truncate ${isActive
                   ? 'border-[var(--terminal-green)] text-[var(--terminal-green)] font-bold glow-green pl-2'
                   : 'border-transparent text-[var(--terminal-text-dim)] hover:text-[var(--terminal-text)] hover:border-[var(--terminal-border)]'
-              }`}
+                }`}
             >
               {heading.level > 1 && <span className="opacity-40 mr-1">›</span>}
               {heading.text}
