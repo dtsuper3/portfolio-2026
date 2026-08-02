@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 
 interface NavbarProps {
   activeSection?: string;
@@ -71,6 +72,12 @@ export default function Navbar({ activeSection = 'home', scrollTo }: NavbarProps
                 ./{s.label}
               </a>
             ))}
+            <Link
+              href="/blog"
+              className="font-mono text-xs transition-all duration-200 cursor-pointer text-[var(--terminal-green)] hover:text-green-300 font-bold focus:outline-none focus:ring-2 focus:ring-green-400 rounded px-2 py-1 border border-[var(--terminal-border)] hover:border-[var(--terminal-green)] bg-[var(--terminal-surface-2)]"
+            >
+              ./blog
+            </Link>
           </div>
 
           <div className="flex items-center gap-3">
@@ -104,19 +111,16 @@ export default function Navbar({ activeSection = 'home', scrollTo }: NavbarProps
             >
               <div className="w-6 h-5 flex flex-col justify-between items-end">
                 <span
-                  className={`h-0.5 bg-current transition-all duration-300 ${
-                    isOpen ? 'w-6 translate-y-2 -rotate-45' : 'w-6'
-                  }`}
+                  className={`h-0.5 bg-current transition-all duration-300 ${isOpen ? 'w-6 translate-y-2 -rotate-45' : 'w-6'
+                    }`}
                 />
                 <span
-                  className={`h-0.5 bg-current transition-all duration-300 ${
-                    isOpen ? 'opacity-0' : 'w-4'
-                  }`}
+                  className={`h-0.5 bg-current transition-all duration-300 ${isOpen ? 'opacity-0' : 'w-4'
+                    }`}
                 />
                 <span
-                  className={`h-0.5 bg-current transition-all duration-300 ${
-                    isOpen ? 'w-6 -translate-y-2.5 rotate-45' : 'w-5'
-                  }`}
+                  className={`h-0.5 bg-current transition-all duration-300 ${isOpen ? 'w-6 -translate-y-2.5 rotate-45' : 'w-5'
+                    }`}
                 />
               </div>
             </button>
@@ -151,6 +155,12 @@ export default function Navbar({ activeSection = 'home', scrollTo }: NavbarProps
                     ./{s.label}
                   </a>
                 ))}
+                <Link
+                  href="/blog"
+                  className="font-mono text-sm text-[var(--terminal-green)] font-bold hover:text-green-300 py-1"
+                >
+                  ./blog
+                </Link>
                 <div className="flex gap-4 pt-2 border-t border-[var(--terminal-border)]">
                   <a
                     href="https://github.com/dtsuper3"

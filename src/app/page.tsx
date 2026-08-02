@@ -3,7 +3,10 @@ import type { Metadata } from 'next';
 import ClientPortfolioShell from '@/components/sections/ClientPortfolioShell';
 import JsonLd from '@/components/seo/JsonLd';
 import { getProjectsSchema } from '@/lib/jsonld';
+import { getLatestPosts } from '@/sanity/lib/fetch';
 import { Project, Experience as ExperienceType, TechCategory } from '@/types/portfolio';
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: 'Deepak Thapa | Senior Full Stack & Next.js Engineer',
@@ -112,8 +115,9 @@ const techStackData: TechCategory[] = [
   { label: 'State Management', items: ['Redux', 'Recoil', 'SWR', 'Context API'] },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
   const projectsSchema = getProjectsSchema(projectsData);
+  const latestPosts = await getLatestPosts();
 
   return (
     <>
@@ -122,6 +126,7 @@ export default function HomePage() {
         projects={projectsData}
         experience={experienceData}
         techStack={techStackData}
+        latestPosts={latestPosts}
       />
     </>
   );
