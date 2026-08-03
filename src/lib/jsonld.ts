@@ -1,4 +1,4 @@
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://deepakthapa.dev';
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://deepakthapa.dev').replace(/\/+$/, '');
 
 export function getPersonSchema() {
   return {
