@@ -9,8 +9,22 @@ export const postFields = groq`
   publishedAt,
   updatedAt,
   featured,
+  difficulty,
+  readingTime,
+  series,
+  faq,
   seoTitle,
   seoDescription,
+  "author": author->{
+    name,
+    "slug": slug.current,
+    avatar,
+    bio,
+    website,
+    github,
+    linkedin,
+    twitter
+  },
   "category": category->{
     title,
     "slug": slug.current
@@ -18,6 +32,17 @@ export const postFields = groq`
   "tags": tags[]->{
     title,
     "slug": slug.current
+  },
+  "relatedPosts": relatedPosts[]->{
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    coverImage,
+    publishedAt,
+    readingTime,
+    difficulty,
+    "category": category->{ title, "slug": slug.current }
   }
 `;
 
