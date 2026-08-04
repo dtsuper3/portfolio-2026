@@ -98,7 +98,7 @@ export default function RootLayout({
   const websiteSchema = getWebSiteSchema();
 
   return (
-    <html lang="en" className={jetbrainsMono.variable}>
+    <html lang="en" className={jetbrainsMono.variable} data-scroll-behavior="smooth">
       <head>
         <JsonLd data={[personSchema, websiteSchema]} />
       </head>
